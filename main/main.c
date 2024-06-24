@@ -6,8 +6,8 @@
 #include "esp_log.h"
 #include "config.h"
 
-static const char *TAG = "UART_PERIODIC_SEND";
-static const char *MESSAGE = "Hello, this is a periodic message from ESP32-C3!\n";
+static const char *TAG = UART_TAG;
+//static const char *MESSAGE = "Hello, this is a periodic message from ESP32-C3!";
 
 void uart_init(void) {
     const uart_config_t uart_config = {
@@ -26,12 +26,16 @@ void uart_init(void) {
 }
 
 void periodic_send_task(void *pvParameters) {
+    int counter = 0;
+    char message_to_send[100];
     while (1) {
-        uart_write_bytes(UART_PORT_NUM, MESSAGE, strlen(MESSAGE));
-        ESP_LOGI(TAG, "Message sent: %s", MESSAGE);
-        ESP_LOGI(TAG, "Next message in 3 seconds");
+        snprintf(message_to_send, sizeof(message_to_send), "%s%d", MESSAGE, counter); //Combine MESSAGE and counter into String
+        uart_write_bytes(UART_PORT_NUM, message_to_send, strlen(message_to_send));
+        ESP_LOGI(TAG, "Message sent: %s", message_to_send);
+        ESP_LOGI(TAG, "Next message in: %d ticks", MESSAGE_DELAY);
         ESP_LOGI(TAG, "*********************************************");
-        vTaskDelay(pdMS_TO_TICKS(3000));  // Delay for 3000 ticks
+        counter++;
+        vTaskDelay(pdMS_TO_TICKS(MESSAGE_DELAY));  // Delay configured in config.h
     }
 }
 

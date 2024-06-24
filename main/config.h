@@ -15,4 +15,8 @@
 #define UART_STOP_BITS          UART_STOP_BITS_1
 #define UART_FLOW_CTRL          UART_HW_FLOWCTRL_DISABLE
 
+// Define Misc
+#define MESSAGE_DELAY           3000                                                    // Delay in Ticks. Ticks are not milliseconds
+#define MESSAGE                 "Hello, this is a periodic message from ESP32-C3! Counter: "      // Message to send via uart and serial console
+#define UART_TAG                "UART_PERIODIC_SEND"                                    // Tag that appears in serial output              
 #endif // UART_CONFIG_H
